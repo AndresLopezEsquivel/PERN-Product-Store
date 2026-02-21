@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import productRoutes from "./routes/productRoutes.js";
 import { sql } from "./config/db.js";
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(express.json()); // Middleware to parse JSON bodies
 app.use(cors()); // Enable CORS for all routes
 app.use(helmet()); // Enable Helmet for security
 app.use(morgan("dev")); // Enable request logging
+app.use('/api/products/', productRoutes);
 
 async function initDB() {
   try {
