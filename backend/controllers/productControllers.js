@@ -15,8 +15,20 @@ async function getProducts(req, res) {
   }
 }
 
-function getProduct(req, res) {
-  res.send("Hello from getProduct");
+async function getProduct(req, res) {
+  const product_id = req.params.id;
+  try {
+    const product = await sql`
+      SELECT * FROM products WHERE id = ${product_id};
+    `;
+    console.log(`typeof product = ${ typeof product }`);
+    console.log(product);
+    res.status(200).json(product[0]);
+  } catch (e) {
+    console.log('Error retrieving products. ').
+    console.log(e);
+    res.status(500).json({ success : false, message: "Error retrieving products" });
+  }
 }
 
 function createProduct(req, res) {
