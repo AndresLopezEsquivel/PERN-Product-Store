@@ -61,8 +61,48 @@ function createProduct(req, res) {
   }
 }
 
-function updateProduct(req, res) {
-  res.send("Hello from updateProduct");
+async function updateProduct(req, res) {
+  const productId = Number(req.params.id);
+
+  if(!Number.isInteger(productId)) {
+    console.log("Product Id is not an integer");
+    res.status(500).json({
+      message: "Product id is not an integer"
+    });
+    return;
+  }
+
+  const { name, image, price } = req.body;
+  try {
+    const updatedProduct = await sql`
+      UPDATE products
+      SET
+        name = ${ name },
+        image = ${ image },
+        price = ${ price }
+      WHERE id = ${productId}
+      RETURNING *
+    `;
+
+    console.log(`typeof updatedProduct = ${ typeof updatedProduct }`);
+    console.log("updatedProduct = ", updatedProduct);
+
+    if (updatedProduct.length === 0) {
+      res.status(404).json({
+        message: "Product with specified id wasn't found"
+      });
+      return;
+    }
+
+    res.status(200).json(updatedProduct[0]);
+  } catch(e) {
+    console.log(`An error occurred while updating the product with id = ${productId}`);
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: `An error occurred while updating the product with id = ${productId}`
+    });
+  }
 }
 
 function deleteProduct(req, res) {
