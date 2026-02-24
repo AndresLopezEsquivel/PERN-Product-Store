@@ -31,7 +31,7 @@ async function getProduct(req, res) {
   }
 }
 
-function createProduct(req, res) {
+async function createProduct(req, res) {
   const { name, image, price } = req.body;
   console.log(req.body);
   console.log(`name: ${name}`);
@@ -40,17 +40,18 @@ function createProduct(req, res) {
   try {
     // Here I could have used await but I prefered to try another approach
     // to test my knowledge on Promises handling
-    sql`
+    const newProduct = await sql`
       INSERT INTO products
       (name, image, price)
       VALUES
       (${name}, ${image}, ${price})
       RETURNING *
-    `.then(newProduct => {
-      console.log(`typeof product = ${ typeof newProduct }`);
-      console.log(newProduct);
-      res.status(200).json(newProduct[0]);
-    });
+    `;
+
+    console.log(`typeof product = ${ typeof newProduct }`);
+    console.log(newProduct);
+    res.status(200).json(newProduct[0]);
+
   } catch (e) {
     console.log("An error occurred while creating a new product.");
     console.log(e);

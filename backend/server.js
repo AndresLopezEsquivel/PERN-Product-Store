@@ -17,7 +17,7 @@ app.use(helmet()); // Enable Helmet for security
 app.use(morgan("dev")); // Enable request logging
 
 // Apply rate limiting to all routes
-app.use(async (req, res) => {
+app.use(async (req, res, next) => {
   try {
     const decision = await aj.protect(req, {
       requested: 1 // Specifies that each request consumes 1 token
