@@ -66,7 +66,7 @@ async function updateProduct(req, res) {
 
   if(!Number.isInteger(productId)) {
     console.log("Product Id is not an integer");
-    res.status(500).json({
+    res.status(400).json({
       message: "Product id is not an integer"
     });
     return;
@@ -105,8 +105,40 @@ async function updateProduct(req, res) {
   }
 }
 
-function deleteProduct(req, res) {
-  res.send("Hello from deleteProduct");
+async function deleteProduct(req, res) {
+  const productId = Number(req.params.id);
+
+  if(!Number.isInteger(productId)) {
+    res.status(400).json({
+      message: "Product id is not an integer"
+    });
+    return;
+  }
+
+  try {
+    const deletedProduct = await sql`
+      DELETE FROM products WHERE id = ${productId}
+      RETURNING *
+    `;
+
+    if(deletedProduct.length === 0) {
+      console.log(`Product with id = ${productId} wasn't found when trying to delete`);
+      res.status(404).json({
+        message: `Product with id = ${productId} wasn't found when trying to delete`
+      });
+      return;
+    }
+
+    res.status(200).json(deletedProduct[0]);
+
+  } catch(e) {
+    console.log(`An error occurred while deleting product with id = ${ productId }`);
+    console.log(e);
+    res.status(500).json({
+      status: 500,
+      message: `An error occurred while deleting product with id = ${ productId }`
+    });
+  }
 }
 
 export { getProducts };
