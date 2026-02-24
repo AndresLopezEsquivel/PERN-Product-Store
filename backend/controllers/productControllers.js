@@ -82,7 +82,7 @@ async function updateProduct(req, res) {
         price = ${ price }
       WHERE id = ${productId}
       RETURNING *
-    `;
+    `; // RETURNING * is necessary to have the info saved in updatedProduct
 
     console.log(`typeof updatedProduct = ${ typeof updatedProduct }`);
     console.log("updatedProduct = ", updatedProduct);
