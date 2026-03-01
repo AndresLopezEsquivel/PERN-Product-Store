@@ -8,7 +8,7 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
 	return(
-		<div className="min-h-screen bg-base-200 transition-colors duration-300">
+		<div className="min-h-screen bg-base-200 transition-colors duration-300" data-theme="forest">
       { /* We'd like to see the navbar on every single page, that's why it is not in Routes */ }
       <Navbar />
       <Routes>
