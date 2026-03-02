@@ -5,10 +5,12 @@ import HomePage from "./pages/HomePage.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
 // Packages
 import { Routes, Route } from "react-router-dom";
+import { useThemeStore } from "./store/useThemeStore.js";
 
 function App() {
+  const { theme } = useThemeStore();
 	return(
-		<div className="min-h-screen bg-base-200 transition-colors duration-300" data-theme="forest">
+		<div className="min-h-screen bg-base-200 transition-colors duration-300" data-theme={theme}>
       { /* We'd like to see the navbar on every single page, that's why it is not in Routes */ }
       <Navbar />
       <Routes>

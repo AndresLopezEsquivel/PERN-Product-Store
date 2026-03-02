@@ -1,10 +1,12 @@
 import { PaletteIcon } from 'lucide-react'
 import { THEMES } from '../constants'
 import React from 'react'
+import { useThemeStore } from '../store/useThemeStore'
 
 function ThemeSelector() {
 
-  const currentTheme = "forest";
+  const { theme, setTheme } = useThemeStore();
+  console.log(`Theme: ${theme}`);
 
   return (
     <div className="dropdown dropdown-end">
@@ -30,9 +32,9 @@ function ThemeSelector() {
       >
         {
           THEMES.map(
-            theme => (
+            optionTheme => (
               <button
-                key={theme.name}
+                key={optionTheme.name}
                 className={
                   `
                   w-full
@@ -44,23 +46,26 @@ function ThemeSelector() {
                   gap-3
                   transition-colors
                   ${
-                    currentTheme === theme.name ?
+                    theme === optionTheme.name ?
                     "bg-primary/10 text-primary" :
                     "hover:bg-base-content/5"
                   }
                   `
                 }
+                onClick={
+                  () => setTheme(optionTheme.name)
+                }
               >
 
                 <PaletteIcon className="size-4" />
                 <span className="text-sm font-medium">
-                  {theme.label}
+                  {optionTheme.label}
                 </span>
 
                 {/* THEME PREVIEW COLORS */}
                 <div className="ml-auto flex gap-1">
                   {
-                    theme.colors.map((color, i) => (
+                    optionTheme.colors.map((color, i) => (
                       <span key={i} className="size-2 rounded-full" style={{ backgroundColor: color }} />
                     ))
                   }
