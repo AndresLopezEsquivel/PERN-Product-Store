@@ -7,7 +7,7 @@ async function getProducts(req, res) {
     `;
     console.log(`typeof products: ${ typeof products }`);
     console.log("Products: ", products);
-    res.status(200).json(products); // https://expressjs.com/en/api.html#res.json
+    res.status(200).json({ data: products }); // https://expressjs.com/en/api.html#res.json
   } catch (e) {
     console.log('Error retrieving products. ').
     console.log(e);
@@ -23,7 +23,7 @@ async function getProduct(req, res) {
     `;
     console.log(`typeof product = ${ typeof product }`);
     console.log(product);
-    res.status(200).json(product[0]);
+    res.status(200).json({ data: product[0] });
   } catch (e) {
     console.log('Error retrieving products. ').
     console.log(e);
@@ -50,7 +50,7 @@ async function createProduct(req, res) {
 
     console.log(`typeof product = ${ typeof newProduct }`);
     console.log(newProduct);
-    res.status(200).json(newProduct[0]);
+    res.status(200).json({ data: newProduct[0] });
 
   } catch (e) {
     console.log("An error occurred while creating a new product.");
@@ -95,7 +95,7 @@ async function updateProduct(req, res) {
       return;
     }
 
-    res.status(200).json(updatedProduct[0]);
+    res.status(200).json({ data: updatedProduct[0] });
   } catch(e) {
     console.log(`An error occurred while updating the product with id = ${productId}`);
     console.log(e);
@@ -130,7 +130,7 @@ async function deleteProduct(req, res) {
       return;
     }
 
-    res.status(200).json(deletedProduct[0]);
+    res.status(200).json({ data: deletedProduct[0] });
 
   } catch(e) {
     console.log(`An error occurred while deleting product with id = ${ productId }`);
